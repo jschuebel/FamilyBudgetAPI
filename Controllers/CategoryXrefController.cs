@@ -44,5 +44,39 @@ namespace FamilyBudget.WebAPI.Controllers
             // })
             // .ToArray();
         }
+
+        // PUT api/values/5
+       // [Authorize]
+        [HttpPut("{id}")]
+//        public async Task<IActionResult> Put(int id, [FromBody] coreevent.Person item)
+//        [HttpPut]
+        //public async Task<IActionResult> Put([FromBody] familyapp.Model.ProductVM item)
+        public IActionResult Put(int id, [FromBody] familyapp.Model.CategoryVM [] items)
+        {
+         try 
+            {
+                if (!ModelState.IsValid)
+                    throw new ArgumentException("ModelState must be invalid", nameof(ModelState));
+//                if (id != item.Id)
+//                    return NotFound("CategoryXref not found"); 
+                _catService.Update(id, items);
+                //return Ok(np);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                var sb = new System.Text.StringBuilder();
+                while (ex!=null) {
+                    ModelState.AddModelError("CategoryXrefPut", ex.Message);
+                    ex=ex.InnerException;
+                }
+                return BadRequest(ModelState);  
+               
+            }
+
+
+        }
+
+
     }
 }

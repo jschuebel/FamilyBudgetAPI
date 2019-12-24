@@ -49,5 +49,85 @@ namespace FamilyBudget.WebAPI.Controllers
             // })
             // .ToArray();
         }
+
+
+       // POST api/values
+        [HttpPost]
+        //[Authorize]
+        public ActionResult<familyapp.Model.CategoryVM> Post([FromBody] familyapp.Model.CategoryVM value)
+        {
+            try
+            {
+                //string authorization = Request.Headers["Authorization"]; 
+                if (!ModelState.IsValid)
+                    throw new ArgumentException("ModelState must be invalid", nameof(ModelState));
+                var np = _catService.Create(value);
+                return Ok(np);
+            }
+            catch (Exception ex)
+            {
+                var sb = new System.Text.StringBuilder();
+                while (ex!=null) {
+                    ModelState.AddModelError("Category:Post", ex.Message);
+                    ex=ex.InnerException;
+                }
+                return BadRequest(ModelState);  
+               
+            }
+        }
+
+        // PUT api/values/5
+       // [Authorize]
+//        [HttpPut("{id}")]
+//        public async Task<IActionResult> Put(int id, [FromBody] coreevent.Person item)
+        [HttpPut]
+        //public async Task<IActionResult> Put([FromBody] familyapp.Model.ProductVM item)
+        public IActionResult Put([FromBody] familyapp.Model.CategoryVM item)
+        {
+         try 
+            {
+                if (!ModelState.IsValid)
+                    throw new ArgumentException("ModelState must be invalid", nameof(ModelState));
+//                if (id != item.Id)
+//                    return NotFound("Person not found"); 
+                var np = _catService.Update(item);
+                return Ok(np);
+            }
+            catch (Exception ex)
+            {
+                var sb = new System.Text.StringBuilder();
+                while (ex!=null) {
+                    ModelState.AddModelError("Category:Put", ex.Message);
+                    ex=ex.InnerException;
+                }
+                return BadRequest(ModelState);  
+               
+            }
+
+
+        }
+
+        // DELETE api/values/5
+        [HttpDelete("{id}")]
+     //   [Authorize]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try {
+                if (! await _catService.Delete(id))
+                    return NotFound("Category not found");
+                return Ok();
+            }
+            catch(Exception ex) {
+
+                var sb = new System.Text.StringBuilder();
+                while (ex!=null) {
+                    ModelState.AddModelError("Category:Get", ex.Message);
+                    ex=ex.InnerException;
+                }
+              return BadRequest(ModelState);  
+            }
+        }
+
+
     }
 }

@@ -49,5 +49,88 @@ namespace FamilyBudget.WebAPI.Controllers
             // })
             // .ToArray();
         }
+
+
+
+       // POST api/values
+        [HttpPost]
+        //[Authorize]
+        public ActionResult<familyapp.Model.PurchaseVM> Post([FromBody] familyapp.Model.PurchaseVM value)
+        {
+            try
+            {
+                //string authorization = Request.Headers["Authorization"]; 
+                if (!ModelState.IsValid)
+                    throw new ArgumentException("ModelState must be invalid", nameof(ModelState));
+                var np = _purchService.Create(value);
+                return Ok(np);
+            }
+            catch (Exception ex)
+            {
+                var sb = new System.Text.StringBuilder();
+                while (ex!=null) {
+                    ModelState.AddModelError("Purchase:Post", ex.Message);
+                    ex=ex.InnerException;
+                }
+                return BadRequest(ModelState);  
+               
+            }
+        }
+
+        // PUT api/values/5
+       // [Authorize]
+//        [HttpPut("{id}")]
+//        public async Task<IActionResult> Put(int id, [FromBody] coreevent.Person item)
+        [HttpPut]
+        //public async Task<IActionResult> Put([FromBody] familyapp.Model.ProductVM item)
+        public IActionResult Put([FromBody] familyapp.Model.PurchaseVM item)
+        {
+         try 
+            {
+                if (!ModelState.IsValid)
+                    throw new ArgumentException("ModelState must be invalid", nameof(ModelState));
+//                if (id != item.Id)
+//                    return NotFound("Person not found"); 
+                var np = _purchService.Update(item);
+                return Ok(np);
+            }
+            catch (Exception ex)
+            {
+                var sb = new System.Text.StringBuilder();
+                while (ex!=null) {
+                    ModelState.AddModelError("Purchase:Put", ex.Message);
+                    ex=ex.InnerException;
+                }
+                return BadRequest(ModelState);  
+               
+            }
+
+
+        }
+
+        // DELETE api/values/5
+        [HttpDelete("{id}")]
+     //   [Authorize]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try {
+                var res = await _purchService.Delete(id);
+                if (! res)
+                    return NotFound("Purchase not found");
+                return Ok();
+            }
+            catch(Exception ex) {
+
+                var sb = new System.Text.StringBuilder();
+                while (ex!=null) {
+                    ModelState.AddModelError("Purchase:Get", ex.Message);
+                    ex=ex.InnerException;
+                }
+              return BadRequest(ModelState);  
+            }
+        }
+
+
+
     }
 }

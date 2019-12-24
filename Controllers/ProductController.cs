@@ -114,7 +114,7 @@ namespace FamilyBudget.WebAPI.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             try {
-                if (! _prodService.Delete(id))
+                if (! await _prodService.Delete(id))
                     return NotFound("Person not found");
                 return Ok();
             }

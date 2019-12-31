@@ -34,6 +34,7 @@ namespace FamilyBudget.WebAPI.Controllers
             HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "X-Total-Count, X-Paging-PageSize");
             HttpContext.Response.Headers.Add("X-Total-Count", JsonConvert.SerializeObject (_catService.Count));
  
+            _logger.LogInformation($"Get method cats count={cats.Count}");
             return cats;
             // var rng = new Random();
             // return Enumerable.Range(1, 5).Select(index => new WeatherForecast
@@ -59,6 +60,7 @@ namespace FamilyBudget.WebAPI.Controllers
                     throw new ArgumentException("ModelState must be invalid", nameof(ModelState));
 //                if (id != item.Id)
 //                    return NotFound("CategoryXref not found"); 
+            _logger.LogInformation($"Put method ProductID={id} items count={items.Length}");
                 _catService.Update(id, items);
                 //return Ok(np);
                 return Ok();

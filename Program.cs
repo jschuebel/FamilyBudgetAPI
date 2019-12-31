@@ -18,8 +18,13 @@ namespace FamilyBudget.WebAPI
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
+            .ConfigureLogging(logBuilder =>
                 {
+                    logBuilder.ClearProviders(); // removes all providers from LoggerFactory
+                    logBuilder.AddConsole();  
+                 })
+            .ConfigureWebHostDefaults(webBuilder =>
+               {
                     webBuilder.UseStartup<Startup>();
                 });
     }
